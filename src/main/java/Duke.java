@@ -1,6 +1,9 @@
 import java.util.Scanner;
 
 public class Duke {
+    private static String[] items = new String[100];
+    private static int numberOfItems = 0;
+
     public static void main(String[] args) {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -14,7 +17,12 @@ public class Duke {
         while(!shouldExit) {
             String userInput = in.nextLine();
             if (!userInput.equals("bye")) {
-                echo(userInput);
+                if (userInput.equals("list")) {
+                    list();
+                } else {
+                    add(userInput);
+                }
+
             } else {
                 shouldExit = true;
                 separator();
@@ -23,11 +31,27 @@ public class Duke {
         exit();
     }
 
+    public static void add(String item) {
+        items[numberOfItems] = item;
+        numberOfItems++;
+        separator();
+        System.out.println("added: " + item);
+        separator();
+    }
+
+    public static void list() {
+        int i = 0;
+        separator();
+        for(i = 0; i < numberOfItems; i++) {
+            System.out.println((i + 1) + ". " + items[i]);
+        }
+        separator();
+    }
+
     public static void echo(String command) {
         separator();
         System.out.println(command);
         separator();
-
     }
 
     public static void separator() {
