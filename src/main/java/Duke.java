@@ -1,8 +1,7 @@
 import java.util.Scanner;
 
 public class Duke {
-    private static String[] items = new String[100];
-    private static int numberOfItems = 0;
+    private static Task[] items = new Task[100];
 
     public static void main(String[] args) {
         String logo = " ____        _        \n"
@@ -16,13 +15,16 @@ public class Duke {
         Scanner in = new Scanner(System.in);
         while(!shouldExit) {
             String userInput = in.nextLine();
-            if (!userInput.equals("bye")) {
-                if (userInput.equals("list")) {
+            String[] userInputArray = (userInput.split(" "));
+            String command = userInputArray[0];
+            if (!command.equals("bye")) {
+                if (command.equals("list")) {
                     list();
+                } else if (command.equals("done")) {
+                    markAsDone(Integer.parseInt(userInputArray[1]));
                 } else {
                     add(userInput);
                 }
-
             } else {
                 shouldExit = true;
                 separator();
@@ -31,19 +33,29 @@ public class Duke {
         exit();
     }
 
-    public static void add(String item) {
-        items[numberOfItems] = item;
-        numberOfItems++;
+    public static void markAsDone(int taskId) {
+        Task selectedTask = items[taskId - 1];
+        selectedTask.markAsCompleted();
         separator();
-        System.out.println("added: " + item);
+        System.out.println(" Nice! I've marked this task as done: ");
+        System.out.println("[✓] " + selectedTask.getTitle());
+        separator();
+    }
+
+    public static void add(String item) {
+        Task newTask = new Task(item);
+        items[Task.numberOfTasks - 1] = newTask;
+        separator();
+        System.out.println("added: " + newTask.getTitle());
         separator();
     }
 
     public static void list() {
         int i = 0;
         separator();
-        for(i = 0; i < numberOfItems; i++) {
-            System.out.println((i + 1) + ". " + items[i]);
+        for(i = 0; i < Task.numberOfTasks; i++) {
+            Task currentTask = items[i];
+            System.out.println((i + 1) + ". ["+ (currentTask.completed ? "✓" : "✗") +"] " + currentTask.getTitle());
         }
         separator();
     }
