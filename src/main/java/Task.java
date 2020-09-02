@@ -17,7 +17,15 @@ public class Task {
         return title;
     }
 
-    public boolean getStatus() {
-        return completed;
+    public String getStatus() {
+        return "["+ (completed ? "✓" : "✗") +"]";
+    }
+
+    public String getType() {
+        return " ";
+    }
+
+    public String getByString() {
+        return " ";
     }
 }

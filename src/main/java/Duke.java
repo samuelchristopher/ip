@@ -22,9 +22,20 @@ public class Duke {
                     list();
                 } else if (command.equals("done")) {
                     markAsDone(Integer.parseInt(userInputArray[1]));
-                } else {
-                    add(userInput);
+                } else if (command.equals("todo")) {
+                    addTodo(userInput.replace("todo", "").trim());
+                } else if (command.equals("deadline")) {
+                    int deadlineDateIndex = userInput.indexOf("/by");
+                    String title = userInput.substring(0, deadlineDateIndex).replace("deadline", "");
+                    String deadlineDate = userInput.substring(deadlineDateIndex+3, userInput.length());
+                    addDeadline(title.trim(), deadlineDate.trim());
+                } else if (command.equals("event")) {
+                    int atIndex = userInput.indexOf("/at");
+                    String title = userInput.substring(0, atIndex).replace("event", "");
+                    String atDate = userInput.substring(atIndex+3, userInput.length());
+                    addEvent(title.trim(), atDate.trim());
                 }
+
             } else {
                 shouldExit = true;
                 separator();
@@ -38,15 +49,33 @@ public class Duke {
         selectedTask.markAsCompleted();
         separator();
         System.out.println(" Nice! I've marked this task as done: ");
-        System.out.println("[✓] " + selectedTask.getTitle());
+        System.out.println(selectedTask.getType().trim() + " [✓] " + selectedTask.getTitle());
         separator();
     }
 
-    public static void add(String item) {
-        Task newTask = new Task(item);
+    public static void addTodo(String item) {
+        Task newTask = new Todo(item);
         items[Task.numberOfTasks - 1] = newTask;
+        printSuccessfulAddMessage(newTask);
+    }
+
+    public static void addDeadline(String item, String deadline) {
+        Task newTask = new Deadline(item, deadline);
+        items[Task.numberOfTasks - 1] = newTask;
+        printSuccessfulAddMessage(newTask);
+    }
+
+    public static void addEvent(String item, String at) {
+        Task newTask = new Event(item, at);
+        items[Task.numberOfTasks - 1] = newTask;
+        printSuccessfulAddMessage(newTask);
+    }
+
+    public static void printSuccessfulAddMessage(Task newTask) {
         separator();
-        System.out.println("added: " + newTask.getTitle());
+        System.out.println("Got it. I've added this task: ");
+        System.out.println("  " + newTask.getType() + newTask.getStatus() + " " + newTask.getTitle());
+        System.out.println("Now you have " + Task.numberOfTasks + " tasks in the list.");
         separator();
     }
 
@@ -55,7 +84,7 @@ public class Duke {
         separator();
         for(i = 0; i < Task.numberOfTasks; i++) {
             Task currentTask = items[i];
-            System.out.println((i + 1) + ". ["+ (currentTask.completed ? "✓" : "✗") +"] " + currentTask.getTitle());
+            System.out.println((i + 1) + ". " + currentTask.getType() + currentTask.getStatus() + " " + currentTask.getTitle());
         }
         separator();
     }
