@@ -17,29 +17,30 @@ public class Duke {
             String userInput = in.nextLine();
             String[] userInputArray = (userInput.split(" "));
             String command = userInputArray[0];
-            if (!command.equals("bye")) {
-                if (command.equals("list")) {
-                    list();
-                } else if (command.equals("done")) {
-                    markAsDone(Integer.parseInt(userInputArray[1]));
-                } else if (command.equals("todo")) {
-                    addTodo(userInput.replace("todo", "").trim());
-                } else if (command.equals("deadline")) {
-                    int deadlineDateIndex = userInput.indexOf("/by");
-                    String title = userInput.substring(0, deadlineDateIndex).replace("deadline", "");
-                    String deadlineDate = userInput.substring(deadlineDateIndex+3, userInput.length());
-                    addDeadline(title.trim(), deadlineDate.trim());
-                } else if (command.equals("event")) {
-                    int atIndex = userInput.indexOf("/at");
-                    String title = userInput.substring(0, atIndex).replace("event", "");
-                    String atDate = userInput.substring(atIndex+3, userInput.length());
-                    addEvent(title.trim(), atDate.trim());
-                }
-
-            } else {
+            if (command.equals("bye")) {
                 shouldExit = true;
                 separator();
+                break;
             }
+
+            if (command.equals("list")) {
+                list();
+            } else if (command.equals("done")) {
+                markAsDone(Integer.parseInt(userInputArray[1]));
+            } else if (command.equals("todo")) {
+                addTodo(userInput.replace("todo", "").trim());
+            } else if (command.equals("deadline")) {
+                int deadlineDateIndex = userInput.indexOf("/by");
+                String title = userInput.substring(0, deadlineDateIndex).replace("deadline", "");
+                String deadlineDate = userInput.substring(deadlineDateIndex+3, userInput.length());
+                addDeadline(title.trim(), deadlineDate.trim());
+            } else if (command.equals("event")) {
+                int atIndex = userInput.indexOf("/at");
+                String title = userInput.substring(0, atIndex).replace("event", "");
+                String atDate = userInput.substring(atIndex+3, userInput.length());
+                addEvent(title.trim(), atDate.trim());
+            }
+
         }
         exit();
     }
