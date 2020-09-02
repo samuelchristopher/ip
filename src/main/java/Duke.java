@@ -16,6 +16,7 @@ public class Duke {
         while(!shouldExit) {
             String userInput = in.nextLine();
             String[] userInputArray = (userInput.split(" "));
+            // first item in userInputArray is the command. e.g. "add" will be stored in command from "add this task"
             String command = userInputArray[0];
             if (command.equals("bye")) {
                 shouldExit = true;
@@ -26,9 +27,11 @@ public class Duke {
             if (command.equals("list")) {
                 list();
             } else if (command.equals("done")) {
-                markAsDone(Integer.parseInt(userInputArray[1]));
+                int taskId = Integer.parseInt(userInputArray[1]);
+                markAsDone(taskId);
             } else if (command.equals("todo")) {
-                addTodo(userInput.replace("todo", "").trim());
+                String todo = userInput.replace("todo", "").trim();
+                addTodo(todo);
             } else if (command.equals("deadline")) {
                 int deadlineDateIndex = userInput.indexOf("/by");
                 String title = userInput.substring(0, deadlineDateIndex).replace("deadline", "");
