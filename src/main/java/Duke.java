@@ -52,8 +52,8 @@ public class Duke {
         Task selectedTask = items[taskId - 1];
         selectedTask.markAsCompleted();
         separator();
-        System.out.println(" Nice! I've marked this task as done: ");
-        System.out.println(selectedTask.getType().trim() + " [✓] " + selectedTask.getTitle());
+        System.out.println("Nice! I've marked this task as done: ");
+        System.out.println(" " + selectedTask.getTitle());
         separator();
     }
 
@@ -78,7 +78,7 @@ public class Duke {
     public static void printSuccessfulAddMessage(Task newTask) {
         separator();
         System.out.println("Got it. I've added this task: ");
-        System.out.println("  " + newTask.getType() + newTask.getStatus() + " " + newTask.getTitle());
+        System.out.println("  " + newTask.getTitle());
         System.out.println("Now you have " + Task.numberOfTasks + " tasks in the list.");
         separator();
     }
@@ -88,7 +88,7 @@ public class Duke {
         separator();
         for(i = 0; i < Task.numberOfTasks; i++) {
             Task currentTask = items[i];
-            System.out.println((i + 1) + ". " + currentTask.getType() + currentTask.getStatus() + " " + currentTask.getTitle());
+            System.out.println((i + 1) + ". " + currentTask.getTitle());
         }
         separator();
     }

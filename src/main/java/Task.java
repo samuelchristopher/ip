@@ -1,7 +1,7 @@
 public class Task {
     public static int numberOfTasks = 0;
     public static Task[] all = new Task[100];
-    public boolean completed = false;
+    public boolean isCompleted = false;
     public String title = "";
 
     public Task(String title) {
@@ -10,7 +10,7 @@ public class Task {
     }
 
     public void markAsCompleted() {
-        this.completed = true;
+        this.isCompleted = true;
     }
 
     public String getTitle() {
@@ -18,7 +18,7 @@ public class Task {
     }
 
     public String getStatus() {
-        return "["+ (completed ? "✓" : "✗") +"]";
+        return "["+ (isCompleted ? "✓" : "✗") +"]";
     }
 
     public String getType() {

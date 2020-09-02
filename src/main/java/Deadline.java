@@ -6,7 +6,7 @@ public class Deadline extends Task {
     }
 
     public String getTitle() {
-        return title + " " + this.getByString();
+        return this.getType() + this.getStatus() + " " + title + " " + this.getByString();
     }
 
     public String getType() {

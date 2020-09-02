@@ -6,7 +6,7 @@ public class Event extends Task {
     }
 
     public String getTitle() {
-        return title + " " + this.getAtString();
+        return this.getType() + this.getStatus() + " " + title + " " + this.getAtString();
     }
 
     public String getType() {
