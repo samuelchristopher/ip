@@ -24,3 +24,6 @@ Prerequisites: JDK 11, update Intellij to the most recent version.
    | |_| | |_| |   <  __/
    |____/ \__,_|_|\_\___|
    ```
+## For Testing
+run `sh ../path/to/runtest.sh`
+note, ensure that dos2unix is install (`brew install dos2unix`)
