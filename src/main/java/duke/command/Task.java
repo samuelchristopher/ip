@@ -1,3 +1,5 @@
+package duke.command;
+
 public class Task {
     public static int numberOfTasks = 0;
     public static Task[] all = new Task[100];
