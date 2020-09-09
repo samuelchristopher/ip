@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Duke {
     private static Task[] items = new Task[100];
 
-    public static void main(String[] args) throws DukeException {
+    public static void main(String[] args) {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -27,51 +27,21 @@ public class Duke {
             if (command.equals("list")) {
                 list();
             } else if (command.equals("done")) {
-                try {
-                    int taskId = Integer.parseInt(userInputArray[1]);
-                    markAsDone(taskId);
-                } catch (NullPointerException e) {
-                    separator();
-                    System.out.println("☹ OOPS!!! A task with that ID does not exist.");
-                    separator();
-                }  catch (ArrayIndexOutOfBoundsException e) {
-                    separator();
-                    System.out.println("☹ OOPS!!! Please specify a task id.");
-                    separator();
-                }
+                int taskId = Integer.parseInt(userInputArray[1]);
+                markAsDone(taskId);
             } else if (command.equals("todo")) {
                 String todo = userInput.replace("todo", "").trim();
                 addTodo(todo);
             } else if (command.equals("deadline")) {
-                try {
-                    int deadlineDateIndex = userInput.indexOf("/by");
-                    String title = userInput.substring(0, deadlineDateIndex).replace("deadline", "");
-                    String deadlineDate = userInput.substring(deadlineDateIndex + 3, userInput.length());
-                    addDeadline(title.trim(), deadlineDate.trim());
-                } catch (StringIndexOutOfBoundsException e) {
-                    separator();
-                    System.out.println(EmptyDeadlineException.errorMessage());
-                    separator();
-                }
+                int deadlineDateIndex = userInput.indexOf("/by");
+                String title = userInput.substring(0, deadlineDateIndex).replace("deadline", "");
+                String deadlineDate = userInput.substring(deadlineDateIndex+3, userInput.length());
+                addDeadline(title.trim(), deadlineDate.trim());
             } else if (command.equals("event")) {
-                try {
-                    int atIndex = userInput.indexOf("/at");
-                    String title = userInput.substring(0, atIndex).replace("event", "");
-                    String atDate = userInput.substring(atIndex+3, userInput.length());
-                    addEvent(title.trim(), atDate.trim());
-                } catch (StringIndexOutOfBoundsException e) {
-                    separator();
-                    System.out.println(EmptyEventException.errorMessage());
-                    separator();
-                }
-            } else {
-                try {
-                    throw new InvalidCommandException();
-                } catch (InvalidCommandException e) {
-                    separator();
-                    System.out.println(InvalidCommandException.errorMessage());
-                    separator();
-                }
+                int atIndex = userInput.indexOf("/at");
+                String title = userInput.substring(0, atIndex).replace("event", "");
+                String atDate = userInput.substring(atIndex+3, userInput.length());
+                addEvent(title.trim(), atDate.trim());
             }
 
         }
@@ -79,7 +49,6 @@ public class Duke {
     }
 
     public static void markAsDone(int taskId) {
-
         Task selectedTask = items[taskId - 1];
         selectedTask.markAsCompleted();
         separator();
@@ -89,21 +58,12 @@ public class Duke {
     }
 
     public static void addTodo(String item) {
-        try {
-            if (item.isEmpty()) {
-                throw new EmptyTodoException();
-            }
-            Task newTask = new Todo(item);
-            items[Task.numberOfTasks - 1] = newTask;
-            printSuccessfulAddMessage(newTask);
-        } catch (EmptyTodoException e) {
-            separator();
-            System.out.println(EmptyTodoException.errorMessage());
-            separator();
-        }
+        Task newTask = new Todo(item);
+        items[Task.numberOfTasks - 1] = newTask;
+        printSuccessfulAddMessage(newTask);
     }
 
-    public static void addDeadline(String item, String deadline) throws StringIndexOutOfBoundsException {
+    public static void addDeadline(String item, String deadline) {
         Task newTask = new Deadline(item, deadline);
         items[Task.numberOfTasks - 1] = newTask;
         printSuccessfulAddMessage(newTask);
@@ -126,13 +86,9 @@ public class Duke {
     public static void list() {
         int i = 0;
         separator();
-        if (Task.numberOfTasks == 0) {
-            System.out.println("No tasks have been added");
-        } else {
-            for(i = 0; i < Task.numberOfTasks; i++) {
-                Task currentTask = items[i];
-                System.out.println((i + 1) + ". " + currentTask.getTitle());
-            }
+        for(i = 0; i < Task.numberOfTasks; i++) {
+            Task currentTask = items[i];
+            System.out.println((i + 1) + ". " + currentTask.getTitle());
         }
         separator();
     }
