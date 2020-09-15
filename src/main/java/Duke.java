@@ -71,6 +71,14 @@ public class Duke {
                     System.out.println(EmptyEventException.errorMessage());
                     separator();
                 }
+            } else if (command.equals("delete")) {
+                try {
+                    delete(Integer.parseInt(userInputArray[1]));
+                } catch (IndexOutOfBoundsException e) {
+                    separator();
+                    System.out.println("☹ OOPS!!! A task with that ID does not exist.");
+                    separator();
+                }
             } else {
                 try {
                     throw new InvalidCommandException();
@@ -83,6 +91,16 @@ public class Duke {
 
         }
         exit();
+    }
+
+    public static void delete(int taskId) {
+        Task task = items.get(taskId - 1);
+        items.remove(task);
+        separator();
+        System.out.println("Noted. I've removed this task: ");
+        System.out.println(" " + task.getTitle());
+        System.out.println("Now you have " + items.size() + " tasks in the list.");
+        separator();
     }
 
     public static void markAsDone(int taskId) {
