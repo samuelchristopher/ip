@@ -4,11 +4,12 @@ import duke.command.Task;
 import duke.command.Todo;
 import duke.exception.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
-    private static Task[] items = new Task[100];
-
+//    private static Task[] items = new Task[100];
+    private static ArrayList<Task> items = new ArrayList<>();
     public static void main(String[] args) throws DukeException {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -85,8 +86,7 @@ public class Duke {
     }
 
     public static void markAsDone(int taskId) {
-
-        Task selectedTask = items[taskId - 1];
+        Task selectedTask = items.get(taskId - 1);
         selectedTask.markAsCompleted();
         separator();
         System.out.println("Nice! I've marked this task as done: ");
@@ -100,7 +100,7 @@ public class Duke {
                 throw new EmptyTodoException();
             }
             Task newTask = new Todo(item);
-            items[Task.numberOfTasks - 1] = newTask;
+            items.add(newTask);
             printSuccessfulAddMessage(newTask);
         } catch (EmptyTodoException e) {
             separator();
@@ -111,13 +111,13 @@ public class Duke {
 
     public static void addDeadline(String item, String deadline) throws StringIndexOutOfBoundsException {
         Task newTask = new Deadline(item, deadline);
-        items[Task.numberOfTasks - 1] = newTask;
+        items.add(newTask);
         printSuccessfulAddMessage(newTask);
     }
 
     public static void addEvent(String item, String at) {
         Task newTask = new Event(item, at);
-        items[Task.numberOfTasks - 1] = newTask;
+        items.add(newTask);
         printSuccessfulAddMessage(newTask);
     }
 
@@ -135,9 +135,8 @@ public class Duke {
         if (Task.numberOfTasks == 0) {
             System.out.println("No tasks have been added");
         } else {
-            for(i = 0; i < Task.numberOfTasks; i++) {
-                Task currentTask = items[i];
-                System.out.println((i + 1) + ". " + currentTask.getTitle());
+            for (Task currentTask : items) {
+                System.out.println((items.indexOf(currentTask) + 1) + ". " + currentTask.getTitle());
             }
         }
         separator();
