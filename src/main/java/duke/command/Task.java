@@ -11,6 +11,14 @@ public class Task {
         numberOfTasks++;
     }
 
+    public String saveFormat() {
+        return title;
+    }
+
+    public int getSaveStatus() {
+        return isCompleted ? 1 : 0;
+    }
+
     public void markAsCompleted() {
         this.isCompleted = true;
     }

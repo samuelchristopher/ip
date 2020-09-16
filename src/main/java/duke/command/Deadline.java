@@ -8,6 +8,10 @@ public class Deadline extends Task {
         this.deadline = deadline;
     }
 
+    public String saveFormat() {
+        return "D | " + (this.getSaveStatus()) + " | " + title + " | " + deadline;
+    }
+
     public String getTitle() {
         return this.getType() + this.getStatus() + " " + title + " " + this.getByString();
     }
