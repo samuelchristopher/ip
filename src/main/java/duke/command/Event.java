@@ -7,6 +7,10 @@ public class Event extends Task {
         this.at = at;
     }
 
+    public String saveFormat() {
+        return "E | " + (this.getSaveStatus()) + " | " + title + " | " + at;
+    }
+
     public String getTitle() {
         return this.getType() + this.getStatus() + " " + title + " " + this.getAtString();
     }

@@ -6,10 +6,15 @@ import duke.exception.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Duke {
 //    private static Task[] items = new Task[100];
     private static ArrayList<Task> items = new ArrayList<>();
+    private static File f = new File("tasks.txt");
     public static void main(String[] args) throws DukeException {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -20,6 +25,7 @@ public class Duke {
         greet();
         boolean shouldExit = false;
         Scanner in = new Scanner(System.in);
+        initData();
         while(!shouldExit) {
             String userInput = in.nextLine();
             String[] userInputArray = (userInput.split(" "));
@@ -48,13 +54,15 @@ public class Duke {
                 }
             } else if (command.equals("todo")) {
                 String todo = userInput.replace("todo", "").trim();
-                addTodo(todo);
+                Task newTask = addTodo(todo);
+                printSuccessfulAddMessage(newTask);
             } else if (command.equals("deadline")) {
                 try {
                     int deadlineDateIndex = userInput.indexOf("/by");
                     String title = userInput.substring(0, deadlineDateIndex).replace("deadline", "");
                     String deadlineDate = userInput.substring(deadlineDateIndex + 3, userInput.length());
-                    addDeadline(title.trim(), deadlineDate.trim());
+                    Task newTask = addDeadline(title.trim(), deadlineDate.trim());
+                    printSuccessfulAddMessage(newTask);
                 } catch (StringIndexOutOfBoundsException e) {
                     separator();
                     System.out.println(EmptyDeadlineException.errorMessage());
@@ -65,7 +73,8 @@ public class Duke {
                     int atIndex = userInput.indexOf("/at");
                     String title = userInput.substring(0, atIndex).replace("event", "");
                     String atDate = userInput.substring(atIndex+3, userInput.length());
-                    addEvent(title.trim(), atDate.trim());
+                    Task newTask = addEvent(title.trim(), atDate.trim());
+                    printSuccessfulAddMessage(newTask);
                 } catch (StringIndexOutOfBoundsException e) {
                     separator();
                     System.out.println(EmptyEventException.errorMessage());
@@ -90,6 +99,7 @@ public class Duke {
             }
 
         }
+        save();
         exit();
     }
 
@@ -103,6 +113,62 @@ public class Duke {
         separator();
     }
 
+    public static void save() {
+        try {
+            // empty current saved items;
+            FileWriter clear = new FileWriter(f);
+            clear.write("");
+            clear.close();
+            int i = 0;
+            for(i = 0; i < Task.numberOfTasks; i++) {
+                Task task = items.get(i);
+
+                FileWriter fw = new FileWriter(f, true);
+
+                fw.write(task.saveFormat() + "\n");
+                fw.close();
+
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public static void initData() {
+        try {
+            Scanner s = new Scanner(f); // create a Scanner using the File as the source
+            while (s.hasNext()) {
+                String currentLine = s.nextLine();
+                String[] items = currentLine.split(" | ");
+                String typeOfTask = items[0];
+                boolean isCompleted = items[2].equals("1") ? true : false;
+                // remove "T |"
+                currentLine = currentLine.replace(typeOfTask + " | ", "");
+                // remove completed status
+                currentLine = currentLine.replace(items[2] + " | ", "");
+                if (typeOfTask.trim().equalsIgnoreCase("T")) {
+                    addTodo(currentLine, isCompleted);
+                }
+                if (typeOfTask.trim().equalsIgnoreCase("E")) {
+                    int atIndex = currentLine.indexOf("|");
+                    String title = currentLine.substring(0, atIndex - 1).trim();
+                    String at = currentLine.substring(atIndex + 1).trim();
+
+                    addEvent(title, at, isCompleted);
+                }
+                if (typeOfTask.trim().equalsIgnoreCase("D")) {
+                    int byIndex = currentLine.indexOf("|");
+                    String title = currentLine.substring(0, byIndex - 1).trim();
+                    String by = currentLine.substring(byIndex + 1).trim();
+                    addDeadline(title, by, isCompleted);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void markAsDone(int taskId) {
         Task selectedTask = items.get(taskId - 1);
         selectedTask.markAsCompleted();
@@ -112,31 +178,54 @@ public class Duke {
         separator();
     }
 
-    public static void addTodo(String item) {
+    public static void addTodo(String item, boolean isCompleted) {
+        Task newTask = addTodo(item);
+        if (isCompleted) {
+            newTask.markAsCompleted();
+        }
+    }
+
+    public static Task addTodo(String item) {
         try {
             if (item.isEmpty()) {
                 throw new EmptyTodoException();
             }
             Task newTask = new Todo(item);
             items.add(newTask);
-            printSuccessfulAddMessage(newTask);
+            return newTask;
         } catch (EmptyTodoException e) {
             separator();
             System.out.println(EmptyTodoException.errorMessage());
             separator();
         }
+
+        return new Task("");
     }
 
-    public static void addDeadline(String item, String deadline) throws StringIndexOutOfBoundsException {
+    public static void addDeadline(String item, String deadline, boolean isCompleted) throws StringIndexOutOfBoundsException {
+        Task newTask = addDeadline(item, deadline);
+        if (isCompleted) {
+            newTask.markAsCompleted();
+        }
+    }
+
+    public static Task addDeadline(String item, String deadline) throws StringIndexOutOfBoundsException {
         Task newTask = new Deadline(item, deadline);
         items.add(newTask);
-        printSuccessfulAddMessage(newTask);
+        return newTask;
     }
 
-    public static void addEvent(String item, String at) {
+    public static void addEvent(String item, String at, boolean isCompleted) {
+        Task newTask = addEvent(item, at);
+        if (isCompleted) {
+            newTask.markAsCompleted();
+        }
+    }
+
+    public static Task addEvent(String item, String at) {
         Task newTask = new Event(item, at);
         items.add(newTask);
-        printSuccessfulAddMessage(newTask);
+        return newTask;
     }
 
     public static void printSuccessfulAddMessage(Task newTask) {
