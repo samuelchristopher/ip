@@ -3,7 +3,18 @@ package duke.components;
 import duke.command.*;
 import duke.exception.InvalidCommandException;
 
+/**
+ * Parser class that determines which command to execute
+ * based on the user input.
+ */
 public class Parser {
+
+    /**
+     * Determines which command to call based on the user input
+     *
+     * @param fullCommand user input that has been read
+     * @return Command command which needs to be executed
+     */
     public static Command parse(String fullCommand) {
         String[] userInputArray = (fullCommand.split(" "));
         String command = userInputArray[0];
