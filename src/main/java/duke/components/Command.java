@@ -2,6 +2,12 @@ package duke.components;
 
 import duke.exception.DukeException;
 
+/**
+ * Command represents a command that user has input.
+ * Each command has an execute function that will be called.
+ * The isExit flag is to identify the exit command.
+ *
+ */
 public class Command {
     public Command() {
 

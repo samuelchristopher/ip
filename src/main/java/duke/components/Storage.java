@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Storage class handles Duke's file interactions (to ensure persistence
+ * of data). These include the initialisation of Duke (reading from the text file)
+ * and the saving of data (writing and updating the text file).
+ */
 public class Storage {
     private static File f;
     private static ArrayList<Task> temp = new ArrayList<>();
@@ -20,6 +25,13 @@ public class Storage {
         f = new File("tasks.txt");
     }
 
+    /**
+     * Loads all the tasks that have been stored on the text file
+     * into an ArrayList of tasks that can be used to initialize the
+     * TaskList. load() is called at the start of every instance of Duke.
+     *
+     * @return ArrayList<Task> this ArrayList is used to initialize the TaskList
+     */
     public static ArrayList<Task> load() {
         try {
             Scanner s = new Scanner(f); // create a Scanner using the File as the source
@@ -59,6 +71,13 @@ public class Storage {
         return temp;
     }
 
+    /**
+     * Saves the current tasks in TaskList into the text file.
+     * save() is called at the end of every instance of Duke.
+     *
+     * @param items the ArrayList<Task> of current tasks in the TaskList
+     * @return void
+     */
     public static void save(ArrayList<Task> items) {
         try {
             // empty current saved items;
