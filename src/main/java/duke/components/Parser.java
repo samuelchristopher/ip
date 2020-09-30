@@ -32,6 +32,8 @@ public class Parser {
             return new DeleteCommand(fullCommand);
         } else if (command.equals("done")) {
             return new DoneCommand(fullCommand);
+        } else if (command.equals("find")) {
+            return new FindCommand(fullCommand);
         } else {
             try {
                 throw new InvalidCommandException();

@@ -44,18 +44,20 @@ public class Ui {
         showLine();
     }
 
-    /**
+  /**
      * Prints ordered lists of tasks (1,2,3 ...)
      *
      * @param items  ArrayList of tasks to be printed
+     * @param message String message that will be
      * @return void
      */
-    public static void printList(ArrayList<Task> items) {
+    public static void printList(ArrayList<Task> items, String message) {
         int i = 0;
         showLine();
         if (Task.numberOfTasks == 0) {
             System.out.println("No tasks have been added");
         } else {
+            System.out.println(message);
             for (Task currentTask : items) {
                 System.out.println((items.indexOf(currentTask) + 1) + ". " + currentTask.getTitle());
             }
