@@ -137,3 +137,27 @@ Noted. I've removed this task:
 Now you have 4 tasks in the list.
 ____________________________________________________________
 ```
+
+### Find a task
+Allow the user to search for tasks.
+
+## Usage
+
+### `find` - Find a task
+
+This command will search for tasks that match the user's input.
+
+Example of usage: 
+
+`find <search string>`
+
+Expected outcome:
+
+```
+____________________________________________________________
+find urn
+____________________________________________________________
+Here are the matching tasks in your list:
+1. [D][✓] return book (by: June 6th)
+____________________________________________________________
+```
