@@ -26,12 +26,13 @@ public class Ui {
         showLine();
     }
 
-    public static void printList(ArrayList<Task> items) {
+    public static void printList(ArrayList<Task> items, String message) {
         int i = 0;
         showLine();
         if (Task.numberOfTasks == 0) {
             System.out.println("No tasks have been added");
         } else {
+            System.out.println(message);
             for (Task currentTask : items) {
                 System.out.println((items.indexOf(currentTask) + 1) + ". " + currentTask.getTitle());
             }
