@@ -14,6 +14,10 @@ public class TodoCommand extends Command {
 
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         String todo = userInput.replace("todo", "").trim();
+        if (todo.isEmpty()) {
+            ui.showError("Please supply a name for the todo");
+            return;
+        }
         Task newTask = TaskList.addTodo(todo);
         Ui.printSuccessfulAddMessage(newTask);
     }

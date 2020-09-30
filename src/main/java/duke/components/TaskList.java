@@ -36,15 +36,6 @@ public class TaskList {
     }
 
     /**
-     * Returns the tasks stored in TaskList
-     *
-     * @return ArrayList<Task> the tasks in TaskList
-     */
-    public static ArrayList<Task> getItems() {
-        return items;
-    }
-
-    /**
      * Adds a Todo to TaskList with the option of setting the status
      * of the Todo immediately
      *
