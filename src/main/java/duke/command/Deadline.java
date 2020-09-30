@@ -1,8 +1,14 @@
 package duke.command;
 
+import duke.components.Ui;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Deadline extends Task {
-    // test comment
     public String deadline;
+
     public Deadline(String title, String deadline) {
         super(title);
         this.deadline = deadline;
@@ -10,6 +16,14 @@ public class Deadline extends Task {
 
     public String saveFormat() {
         return "D | " + (this.getSaveStatus()) + " | " + title + " | " + deadline;
+    }
+
+    public String formattedDate() {
+        String[] dateComponents = deadline.split(" ");
+        LocalDate deadlineDate = LocalDate.parse(dateComponents[0]);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+        return deadlineDate.format(formatter) + (dateComponents.length > 1 ? (" " + dateComponents[1]) : "");
     }
 
     public String getTitle() {
@@ -21,6 +35,6 @@ public class Deadline extends Task {
     }
 
     public String getByString() {
-        return "(by: " + deadline + ")";
+        return "(by: " + this.formattedDate() + ")";
     }
 }
