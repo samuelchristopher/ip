@@ -6,6 +6,9 @@ import duke.components.TaskList;
 import duke.components.Ui;
 import duke.exception.EmptyDeadlineException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class DeadlineCommand extends Command {
     private String userInput;
 
@@ -18,7 +21,15 @@ public class DeadlineCommand extends Command {
             int deadlineDateIndex = userInput.indexOf("/by");
             String title = userInput.substring(0, deadlineDateIndex).replace("deadline", "");
             String deadlineDate = userInput.substring(deadlineDateIndex + 3, userInput.length());
-            Task newTask = tasks.addDeadline(title.trim(), deadlineDate.trim());
+            String deadline =deadlineDate.trim();
+            try {
+                String[] dateComponents = deadline.split(" ");
+                LocalDate testDate = LocalDate.parse(dateComponents[0]);
+            } catch (DateTimeParseException e) {
+                Ui.showError("Please use the format YYYY-MM-DD for deadlines");
+                return;
+            }
+            Task newTask = tasks.addDeadline(title.trim(), deadline);
             ui.printSuccessfulAddMessage(newTask);
         } catch (StringIndexOutOfBoundsException e) {
             ui.showError(EmptyDeadlineException.errorMessage());
