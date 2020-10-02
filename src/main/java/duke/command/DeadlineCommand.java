@@ -26,8 +26,7 @@ public class DeadlineCommand extends Command {
                 String[] dateComponents = deadline.split(" ");
                 LocalDate testDate = LocalDate.parse(dateComponents[0]);
             } catch (DateTimeParseException e) {
-                Ui.showError("Please use the format YYYY-MM-DD for deadlines");
-                return;
+                Ui.showError("Note you can use the format YYYY-MM-DD for deadlines");
             }
             Task newTask = tasks.addDeadline(title.trim(), deadline);
             ui.printSuccessfulAddMessage(newTask);
